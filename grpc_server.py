@@ -2,8 +2,8 @@ from concurrent import futures
 
 
 import grpc
-import user_service_pb2
-import user_service_pb2_grpc
+from grpc import user_service_pb2, user_service_pb2_grpc
+
 
 class UserServiceServicer(user_service_pb2_grpc.UserServiceServicer):
     def GetUser(self, request, context):
