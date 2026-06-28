@@ -1,9 +1,7 @@
-from httpx import head
-
-from files import files_client as fc
+from clients.files import files_client as fc
 import httpx
 
-from files.files_client import CreateFileRequestDict
+from clients.files.files_client import CreateFileRequestDict
 
 
 login_payload = {
