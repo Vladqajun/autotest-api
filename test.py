@@ -26,7 +26,7 @@ request_data: CreateFileRequestDict = {
 }
 
 
-response = client.create_file(request_data)
+response = client.create_file_api(request_data)
 print(f"Status: {response.status_code}")
 print(f"Response: {response.json()}")
 

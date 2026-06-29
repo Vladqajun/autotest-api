@@ -5,28 +5,40 @@ from clients.api_client import APIClient
 
 from clients.private_http_builder import get_private_http_client
 from clients.private_http_builder import AuthenticationUserDict
+
+
+
 class UpdateUserRequestDict(TypedDict):
     """
-    Описание структуры запроса на обновление пользовател
+    Описание структуры запроса на обновление пользователя
     """
     email: str | None
     password: str | None
     firstName: str | None
     middleName: str | None
 
+class User(TypedDict):
+    id: str
+    email: str
+    lastName: str
+    firstName: str
+    middleName: str
+
+class GetUserResponseDict(TypedDict):
+    user: User
 
 class PrivateUsersClient(APIClient):
     """
     Клиент для работы с /api/v1/users
     """
-    def get_get_user_me_api(self) -> Response:
+    def get_user_me_api(self) -> Response:
         """
         Метод получения текущего пользователя
         :return: Ответ от сервера в виде httpx.Response
         """
         return self.get("/api/v1/users/me")
 
-    def get_get_user_api(self, user_id: str) -> Response:
+    def get_user_api(self, user_id: str) -> Response:
         """
         Метод получения пользователя по его uuid
         :param user_id: id пользователя
@@ -50,6 +62,13 @@ class PrivateUsersClient(APIClient):
         :return: Ответ от сервера в виде httpx.Response
         """
         return self.delete(f"/api/v1/users/{user_id}")
+
+    def get_user(self, user_id: str) -> GetUserResponseDict:
+        """Метод получения пользователя по его uuid, возвращает тело ответа"""
+        response = self.get_user_api(user_id)
+        return response.json()
+
+
 
 def get_private_users_client(user: AuthenticationUserDict) -> PrivateUsersClient:
     """

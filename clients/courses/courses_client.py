@@ -4,8 +4,32 @@ from httpx import QueryParams
 from websockets import Response
 
 from clients.api_client import APIClient
+from clients.files.files_client import File
 from clients.private_http_builder import AuthenticationUserDict, get_private_http_client
+from clients.users.private_users_client import User
 
+
+class CreateCourseRequestDict(TypedDict):
+    title: str
+    maxScore: int
+    minScore: int
+    description: str
+    estimatedTime: str
+    previewFileId: str
+    createdByUserId: str
+
+class Course(TypedDict):
+    id: str
+    title: str
+    maxScore: int
+    minScore: int
+    description: str
+    previewFile: File
+    estimatedTime: str
+    createdByUser: User
+
+class CreateCourseResponseDict(TypedDict):
+    course: Course
 
 class GetCoursesQueryDict(TypedDict):
     """
@@ -50,7 +74,7 @@ class CoursesClient(APIClient):
         :param query: Словарь с userId.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return self.get(f"/api/v1/courses", params=QueryParams(**query))
+        return self.get(f"/api/v1/courses", params=query)
 
     def get_course(self, course_id: str) -> Response:
         """
@@ -61,7 +85,7 @@ class CoursesClient(APIClient):
         """
         return self.get(f"/api/v1/courses/{course_id}")
 
-    def create_course(self, request: GetCoursesQueryRequestDict) -> Response:
+    def create_course_api(self, request: GetCoursesQueryRequestDict) -> Response:
         """
         Метод создания курса.
 
@@ -69,10 +93,9 @@ class CoursesClient(APIClient):
         previewFileId, createdByUserId.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
-        return
         return self.post(f"/api/v1/courses", json=request)
 
-    def update_course(self, course_id: str, request: UpdateCourseRequestDict) -> Response:
+    def update_course_api(self, course_id: str, request: UpdateCourseRequestDict) -> Response:
         """
         Метод обновления курса.
 
@@ -82,13 +105,17 @@ class CoursesClient(APIClient):
         """
         return self.patch(f"/api/v1/courses/{course_id}", json=request)
 
-    def delete_course(self, course_id: str) -> Response:
+    def delete_course_api(self, course_id: str) -> Response:
         """
         Метод удаления курса.
         :param course_id: Идентификатор курса.
         :return: Ответ от сервера в виде объекта httpx.Response
         """
         return self.delete(f"/api/v1/courses/{course_id}")
+
+    def create_course(self, request: CreateCourseRequestDict) -> CreateCourseResponseDict:
+        response = self.create_course_api(request)
+        return response.json()
 
 def get_courses_client(user: AuthenticationUserDict) -> CoursesClient:
     """
