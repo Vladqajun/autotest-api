@@ -1,10 +1,12 @@
 import pytest
 from pydantic import BaseModel, EmailStr
-from clients.authentication.authentication_client import AuthenticationClient, get_authentication_client
+
 from clients.users.public_users_client import PublicUsersClient, get_public_users_client
 from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema
 
-
+#сейчас мы находимся в плагине т.е. в модуле питона, т.е. пакете одно и тоже
+#чтобы плагин с фикстурами подключить, нужен conftest  с определенным кодом подключения который есть на сайте pytest
+#и все дальше просто указываешь фикстуры в параметрах функции как обычно, все работает
 class UserFixture(BaseModel):
     request: CreateUserRequestSchema
     response: CreateUserResponseSchema
@@ -16,10 +18,6 @@ class UserFixture(BaseModel):
     @property
     def password(self) -> str:
         return self.request.password
-
-@pytest.fixture
-def authentication_client() -> AuthenticationClient:
-    return get_authentication_client()
 
 
 @pytest.fixture
