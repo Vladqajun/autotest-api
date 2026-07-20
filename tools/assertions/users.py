@@ -1,5 +1,5 @@
 from clients.authentication.authentication_schema import LoginResponseSchema
-from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema
+from clients.users.users_schema import CreateUserRequestSchema, CreateUserResponseSchema, GetUserResponseSchema
 from tools.assertions.base import assert_equal
 
 
@@ -21,3 +21,10 @@ def assert_login_response(response: LoginResponseSchema):
     assert_equal(response.token.token_type, "bearer", "token_type")
     assert response.token.access_token != "", "access_token пустой"
     assert response.token.refresh_token != "", "refresh_token пустой"
+
+def assert_get_user_response(response_data: GetUserResponseSchema, expected: CreateUserResponseSchema):
+    assert_equal(response_data.user.id, expected.user.id, "id")
+    assert_equal(response_data.user.email, expected.user.email, "email")
+    assert_equal(response_data.user.last_name, expected.user.last_name, "last_name")
+    assert_equal(response_data.user.first_name, expected.user.first_name, "first_name")
+    assert_equal(response_data.user.middle_name, expected.user.middle_name, "middle_name")

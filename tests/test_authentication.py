@@ -14,6 +14,7 @@ from tools.assertions.users import assert_login_response
 
 @pytest.mark.users
 @pytest.mark.authentication
+@pytest.mark.regression
 def test_login(function_user: UserFixture, public_users_client: PublicUsersClient, authentication_client: AuthenticationClient):
 
     login_request = LoginRequestSchema(

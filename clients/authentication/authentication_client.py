@@ -34,10 +34,6 @@ class AuthenticationClient(APIClient):
 
     def login(self, request: LoginRequestSchema) -> LoginResponseSchema:
         response = self.login_api(request)
-        print(f"вот такой ответ респонсе",response, "с вот таким телом", response.json())
-        print(f"Статус ответа: {response.status_code}")
-        print(f"Заголовки: {response.headers}")
-        print(f"Тело ответа: {response.text}")
         return LoginResponseSchema.model_validate_json(response.text)
 
 
