@@ -53,4 +53,3 @@ class UpdateUserResponseSchema(BaseModel):
     user: UserSchema
 
 
-print(CreateUserRequestSchema())
