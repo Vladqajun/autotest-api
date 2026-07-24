@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Sized
 
 
 def assert_status_code(actual: int, expected: int):
@@ -29,5 +29,13 @@ def assert_equal(actual: Any, expected: Any, name: str):
         f"Expected value {expected}. "
         f"Actual value {actual}. "
     )
+
+def assert_length(actual: Sized, expected: Sized, name: str): #Sized такой тип данный который применяется ко всему что имеет длину length
+    assert len(actual) == len(expected), (
+        f"Incorrect object length: '{name}'. "
+        f"Expected object length '{len(expected)}'. "
+        f"Actual object length '{len(actual)}'. "
+    )
+
 
 
